@@ -26,7 +26,7 @@ export default function EditInvoiceForm({
   const [state, dispatch] = useFormState(updateInvoiceWithId, initialState);
 
   return (
-    <form action={updateInvoiceWithId}>
+    <form action={dispatch}>
       {/* Note: Using a hidden input field in your form also works en vez de bind (e.g. <input type="hidden" name="id" value={invoice.id} />). However, the values will appear as full text in the HTML source, 
       which is not ideal for sensitive data like IDs. */}
       {/* <input type="hidden" name="id" value={invoice.id} /> */}
@@ -55,6 +55,17 @@ export default function EditInvoiceForm({
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
+          {state.errors?.customerId ? (
+            <div
+              id="customer-error"
+              aria-live="polite"
+              className="mt-2 text-sm text-red-500"
+            >
+              {state.errors.customerId.map((error: string) => (
+                <p key={error}>{error}</p>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         {/* Invoice Amount */}
@@ -76,6 +87,17 @@ export default function EditInvoiceForm({
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+          {state.errors?.amount ? (
+            <div
+              id="customer-error"
+              aria-live="polite"
+              className="mt-2 text-sm text-red-500"
+            >
+              {state.errors.amount.map((error: string) => (
+                <p key={error}>{error}</p>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         {/* Invoice Status */}
@@ -120,6 +142,26 @@ export default function EditInvoiceForm({
             </div>
           </div>
         </fieldset>
+        {state.errors?.status ? (
+          <div
+            id="status-error"
+            aria-live="polite"
+            className="mt-2 text-sm text-red-500"
+          >
+            {state.errors.status.map((error: string) => (
+              <p key={error}>{error}</p>
+            ))}
+          </div>
+        ) : null}
+        {state.message ? (
+          <div
+            id="message-error"
+            aria-live="polite"
+            className="mt-2 text-sm text-red-500"
+          >
+            <p key={state.message}>{state.message}</p>
+          </div>
+        ) : null}
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

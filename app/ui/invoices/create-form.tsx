@@ -13,7 +13,7 @@ import { createInvoice } from '@/app/lib/actions';
 // para ser usado en server side validation --->
 import { useFormState } from 'react-dom';
 
-// ! ojo que hay que completar manejo de errores para amount y status (chapter 14)
+
 export default function Form({ customers }: { customers: CustomerField[] }) {
   const initialState = { message: null, errors: {} };
   // you can access the errors using the form state
@@ -73,6 +73,17 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+          {state.errors?.amount ? (
+            <div
+              id="customer-error"
+              aria-live="polite"
+              className="mt-2 text-sm text-red-500"
+            >
+              {state.errors.amount.map((error: string) => (
+                <p key={error}>{error}</p>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         {/* Invoice Status */}
@@ -115,6 +126,26 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             </div>
           </div>
         </fieldset>
+        {state.errors?.status ? (
+          <div
+            id="status-error"
+            aria-live="polite"
+            className="mt-2 text-sm text-red-500"
+          >
+            {state.errors.status.map((error: string) => (
+              <p key={error}>{error}</p>
+            ))}
+          </div>
+        ) : null}
+        {state.message ? (
+          <div
+            id="message-error"
+            aria-live="polite"
+            className="mt-2 text-sm text-red-500"
+          >
+            <p key={state.message}>{state.message}</p>
+          </div>
+        ) : null}
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
