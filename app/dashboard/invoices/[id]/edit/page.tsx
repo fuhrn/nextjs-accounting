@@ -3,6 +3,7 @@
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
+import { notFound } from 'next/navigation';
 
 // This form should be pre-populated with a defaultValue for the customer's name, invoice amount, and status.
 // To pre - populate the form fields, you need to fetch the specific invoice using id.
@@ -16,6 +17,15 @@ export default async function Page({ params }: { params: { id: string } }) {
     fetchInvoiceById(id),
     fetchCustomers(),
   ]);
+
+  // Perfect! <Page> will now throw an error if a specific invoice is not found. To show an error UI to the user.
+  // Create a not - found.tsx file inside the / edit folder.
+  // That's something to keep in mind, notFound will take precedence over error.tsx, 
+  // so you can reach out for it when you want to handle more specific errors!
+  if (!invoice) {
+    notFound();
+  }
+
   return (
     <main>
       <Breadcrumbs
